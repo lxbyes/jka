@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: lxbyes
+  cloud:
+    config:
+      fail-fast: true

@@ -19,12 +19,15 @@ public class ConfigClientApplication {
   @Value("${foo: NOT_FOUND}")
   private String foo;
 
+  @Value("${foo.db: NOT_FOUND}")
+  private String fooDb;
+
   public static void main(String[] args) {
     try {
       ConfigurableApplicationContext applicationContext = SpringApplication.run(ConfigClientApplication.class, args);
       applicationContext.getEnvironment().getPropertySources().forEach(propertySource -> {
         System.out.println("------------------------------");
-        System.out.println("name: " + propertySource.getName());
+        System.out.println("name: " + propertySource.getName() + ", class: " + propertySource.getSource().getClass());
         System.out.println(propertySource.getSource());
       });
     } catch (Exception e) {
@@ -36,5 +39,6 @@ public class ConfigClientApplication {
   private void postConstruct() {
     System.out.println("stu.gr.name: " + name);
     System.out.println("foo: " + foo);
+    System.out.println("foo.db: " + fooDb);
   }
 }

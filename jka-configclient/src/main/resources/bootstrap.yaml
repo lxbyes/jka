@@ -3,4 +3,7 @@ spring:
     name: lxbyes
   cloud:
     config:
+      name: foo
+      profile: db
+      #label: test
       fail-fast: true

@@ -1,0 +1,7 @@
+### application=foo profile=development
+GET http://localhost:8888/foo/development
+
+### application=foo profile=myprofile label=test
+GET http://localhost:8888/foo/myprofile/test
+
+###

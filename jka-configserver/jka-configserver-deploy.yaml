@@ -1,0 +1,54 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: configserver
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    protocol: TCP
+    targetPort: 8888
+    port: 8888
+  selector:
+    app: configserver
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver
+  labels:
+    app: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      hostAliases:
+      - ip: "127.0.0.1"
+        hostnames:
+        - "configserver"
+      volumes:
+        - name: app-log
+          hostPath:
+            path: F:\log
+      containers:
+      - name: configserver
+        image: jka-configserver:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8888
+        #volumeMounts:
+        #- name: app-log
+        #  mountPath: /logs
+        command: ["java"]
+        args: ["-Djava.security.egd=file:/dev/./urandom","-server","-Xmx1g","-Xms1g","-XX:+DisableExplicitGC","-XX:+UseConcMarkSweepGC",
+        "-XX:+CMSParallelRemarkEnabled","-XX:LargePageSizeInBytes=128m","-XX:+UseFastAccessorMethods","-XX:+UseCMSInitiatingOccupancyOnly",
+        "-XX:CMSInitiatingOccupancyFraction=70","-Xloggc:/logs/gc.log","-verbose:gc","-XX:+PrintGCDetails","-XX:+HeapDumpOnOutOfMemoryError",
+        "-XX:HeapDumpPath=/logs/","-Duser.timezone=GMT+08","-jar","/app/jka-configserver.jar"]

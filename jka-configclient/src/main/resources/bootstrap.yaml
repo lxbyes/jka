@@ -1,9 +1,10 @@
 spring:
   application:
-    name: lxbyes
+    name: jka-configclient
   cloud:
     config:
       name: foo
-      profile: db
+      profile: default
       #label: test
       fail-fast: true
+      uri: http://10.28.100.57:32100

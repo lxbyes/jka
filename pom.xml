@@ -54,6 +54,7 @@
     <module>jka-configserver</module>
     <module>jka-client</module>
     <module>jka-eurekaserver</module>
+    <module>jka-ribbon</module>
   </modules>
 
 </project>

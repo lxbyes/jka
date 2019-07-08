@@ -31,6 +31,9 @@ public class ConfigController {
   @Value("${foo.db: NOT_FOUND}")
   private String fooDb;
 
+  @Value("${server.port: NOTFOUND}")
+  private String port;
+
   @GetMapping("value/{fieldName}")
   public String valueOfField(@PathVariable String fieldName) {
 

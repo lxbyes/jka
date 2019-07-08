@@ -55,6 +55,7 @@
     <module>jka-client</module>
     <module>jka-eurekaserver</module>
     <module>jka-ribbon</module>
+    <module>jka-feign</module>
   </modules>
 
 </project>

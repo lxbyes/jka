@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author laixianbo
+ * @author Leckie
  * @version HiFeignController: HiFeignController.java, v0.1 2019/7/8 16:12 john Exp $$
  */
 @RestController

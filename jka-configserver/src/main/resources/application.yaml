@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: JkaConfigServer
+    name: jka-configserver
   cloud:
     config:
       server:

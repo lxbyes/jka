@@ -1,0 +1,43 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: client
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      targetPort: 8001
+      port: 8001
+      nodePort: 32101
+  selector:
+    app: client
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+  labels:
+    app: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: 10.28.100.57:5000/jka-client:latest
+          ports:
+            - containerPort: 8001
+          command: ["java"]
+          args: ["-Dserver.port=8001", "-Djava.security.egd=file:/dev/./urandom","-server","-Xmx1g","-Xms1g","-XX:+DisableExplicitGC","-XX:+UseConcMarkSweepGC",
+                 "-XX:+CMSParallelRemarkEnabled","-XX:LargePageSizeInBytes=128m","-XX:+UseFastAccessorMethods","-XX:+UseCMSInitiatingOccupancyOnly",
+                 "-XX:CMSInitiatingOccupancyFraction=70","-Xloggc:/logs/gc.log","-verbose:gc","-XX:+PrintGCDetails","-XX:+HeapDumpOnOutOfMemoryError",
+                 "-XX:HeapDumpPath=/logs/","-Duser.timezone=GMT+08","-jar","/app/jka-client.jar"]

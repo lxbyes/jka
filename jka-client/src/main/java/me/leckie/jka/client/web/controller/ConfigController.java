@@ -1,4 +1,4 @@
-package me.leckie.configclient.web.controller;
+package me.leckie.jka.client.web.controller;
 
 import java.lang.reflect.Field;
 import javax.annotation.PostConstruct;

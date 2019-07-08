@@ -1,4 +1,4 @@
-package me.leckie.configserver;
+package me.leckie.jka.configserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: jka-configclient
+    name: jka-client
   cloud:
     config:
       name: foo

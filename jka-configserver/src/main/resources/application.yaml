@@ -11,3 +11,16 @@ spring:
           uri: https://github.com/lxbyes/config-repo.git
           deleteUntrackedBranches: true
           #refreshRate: 0
+    bus:
+      trace:
+        enabled: true
+  rabbitmq:
+    addresses: localhost
+    port: 5672
+    username: admin
+    password: admin
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

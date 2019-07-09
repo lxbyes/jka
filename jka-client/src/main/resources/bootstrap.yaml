@@ -3,8 +3,8 @@ spring:
     name: jka-client
   cloud:
     config:
-      name: foo
-      profile: default
+      #name: foo
+      #profile: default
       #label: test
       fail-fast: true
-      uri: http://10.28.100.57:32100
+      #uri: http://10.28.100.57:32100

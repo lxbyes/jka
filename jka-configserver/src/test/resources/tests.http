@@ -5,3 +5,9 @@ GET http://localhost:8888/foo/development
 GET http://localhost:8888/foo/myprofile/test
 
 ###
+GET http://localhost:8888/jka-client/default
+
+###
+POST http://localhost:8888/actuator/bus-refresh
+
+###

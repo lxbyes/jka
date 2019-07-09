@@ -1,0 +1,15 @@
+
+server:
+  port: 8080
+spring:
+  application:
+    name: jka-zuul
+
+zuul:
+  routes:
+    ribbon:
+      path: /ribbon/**
+      service-id: jka-ribbon
+    feign:
+      path: /feign/**
+      service-id: jka-feign

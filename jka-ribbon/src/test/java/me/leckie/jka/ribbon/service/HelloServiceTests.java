@@ -20,7 +20,7 @@ public class HelloServiceTests {
 
   @Test
   public void valueOfFieldName() {
-    String fooValue = helloService.valueOfFieldName("foo");
+    Object fooValue = helloService.valueOfFieldName("foo");
     System.out.println(fooValue);
   }
 }

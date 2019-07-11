@@ -1,7 +1,9 @@
 package me.leckie.jka.client.web.controller;
 
 import java.lang.reflect.Field;
+import java.util.Enumeration;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +39,14 @@ public class ConfigController {
   private String port;
 
   @GetMapping("value/{fieldName}")
-  public String valueOfField(@PathVariable String fieldName) {
+  public String valueOfField(@PathVariable String fieldName, HttpServletRequest request) {
+
+    logger.info("------------------");
+    Enumeration<String> headerNames = request.getHeaderNames();
+    while (headerNames.hasMoreElements()) {
+      String headerName = headerNames.nextElement();
+      logger.info("headerName={}, headerValue={}", headerName, request.getHeader(headerName));
+    }
 
     try {
       Field field = this.getClass().getDeclaredField(fieldName);

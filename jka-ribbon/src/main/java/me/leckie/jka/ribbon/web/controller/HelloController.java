@@ -19,7 +19,7 @@ public class HelloController {
   private HelloService helloService;
 
   @GetMapping("{fieldName}")
-  public String helloRibbon(@PathVariable String fieldName) {
+  public Object helloRibbon(@PathVariable String fieldName) {
     return helloService.valueOfFieldName(fieldName);
   }
 

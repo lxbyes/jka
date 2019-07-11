@@ -2,7 +2,6 @@ package me.leckie.jka.feign.web.controller;
 
 import me.leckie.jka.feign.service.HiFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +23,14 @@ public class HiFeignController {
     return hiFeignService.valueOfFieldName("port");
   }
 
-  @GetMapping("{fieldName}")
+  @GetMapping("/{fieldName}")
   public String getValueOfField(@PathVariable String fieldName) {
     return hiFeignService.valueOfFieldName(fieldName);
+  }
+
+  @GetMapping("/hello")
+  public String hello() {
+    return "Hello, World!";
   }
 
 }

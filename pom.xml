@@ -52,10 +52,11 @@
 
   <modules>
     <module>jka-configserver</module>
-    <module>jka-client</module>
     <module>jka-eurekaserver</module>
+    <module>jka-client</module>
     <module>jka-ribbon</module>
     <module>jka-feign</module>
+    <module>jka-zuul</module>
   </modules>
 
 </project>

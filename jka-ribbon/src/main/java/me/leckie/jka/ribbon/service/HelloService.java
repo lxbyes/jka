@@ -1,6 +1,7 @@
 package me.leckie.jka.ribbon.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,11 +17,16 @@ public class HelloService {
   private RestTemplate restTemplate;
 
   @HystrixCommand(fallbackMethod = "hiError")
-  public String valueOfFieldName(String fieldName) {
-    return restTemplate.getForObject("http://JKA-CLIENT/value/" + fieldName, String.class);
+  public Object valueOfFieldName(String fieldName) {
+    String fieldNameValue = restTemplate.getForObject("http://JKA-CLIENT/value/" + fieldName, String.class);
+    String port = restTemplate.getForObject("http://JKA-CLIENT/value/port", String.class);
+    return new HashMap<String, Object>() {{
+      put(fieldName, fieldNameValue);
+      put("port", port);
+    }};
   }
 
-  public String hiError(String fieldName) {
+  public Object hiError(String fieldName) {
     return "Sorry, " + fieldName + " service not available.";
   }
 

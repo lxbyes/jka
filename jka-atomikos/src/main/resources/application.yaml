@@ -5,16 +5,21 @@ spring:
     account:
       name: account
       platform: mysql
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/bytetcc_provider?useUnicode=true&characterEncoding=utf-8
+      url: jdbc:mysql://127.0.0.1:3306/bytetcc_provider?useUnicode=true&characterEncoding=utf-8
       username: root
       password: root
       driver-class-name: com.mysql.cj.jdbc.Driver
     transfer:
       name: transfer
       platform: mysql
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/bytetcc_consumer?useUnicode=true&characterEncoding=utf-8
+      url: jdbc:mysql://127.0.0.1:3306/bytetcc_consumer?useUnicode=true&characterEncoding=utf-8
       username: root
       password: root
       driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

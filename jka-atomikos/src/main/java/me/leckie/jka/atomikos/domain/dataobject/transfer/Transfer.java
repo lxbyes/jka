@@ -16,7 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
  * @version Transfer.java, v0.1 2019/7/21 11:40
  */
 @Entity
-@Table
+@Table(name = "transfer")
 @Data
 public class Transfer implements Serializable {
 

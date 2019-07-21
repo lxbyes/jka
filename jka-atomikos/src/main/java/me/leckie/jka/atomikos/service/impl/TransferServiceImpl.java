@@ -51,7 +51,7 @@ public class TransferServiceImpl implements TransferService {
   }
 
   @Override
-  @Transactional(transactionManager = "transferTransactionManager")
+  @Transactional
   public void addTransfer(Transfer transfer) {
     transferRepository.save(transfer);
   }

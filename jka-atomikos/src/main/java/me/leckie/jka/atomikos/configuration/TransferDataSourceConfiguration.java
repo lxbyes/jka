@@ -1,64 +1,71 @@
 package me.leckie.jka.atomikos.configuration;
 
-import java.util.Map;
-import javax.persistence.EntityManager;
+import com.mysql.cj.jdbc.MysqlXADataSource;
+import java.sql.SQLException;
+import java.util.HashMap;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author Leckie
  * @version TransferDataSourceConfiguration.java, v0.1 2019/7/21 15:06
  */
 @Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "me.leckie.jka.atomikos.repository.transfer", entityManagerFactoryRef = "transferEntityManagerFactory", transactionManagerRef = "transferTransactionManager")
+@DependsOn("transactionManager")
+@EnableJpaRepositories(basePackages = "me.leckie.jka.atomikos.repository.transfer", entityManagerFactoryRef = "transferEntityManagerFactory")
 public class TransferDataSourceConfiguration {
 
-  @Autowired
-  @Qualifier("transferDataSource")
-  private DataSource transferDataSource;
+  @Autowired(required = false)
+  private JpaVendorAdapter jpaVendorAdapter;
 
-  @Autowired
-  private JpaProperties jpaProperties;
-
-  @Autowired
-  private HibernateProperties hibernateProperties;
-
-  private Map<String, Object> getVendorProperties() {
-    Map<String, Object> properties = hibernateProperties
-        .determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
-    return properties;
+  @Bean("transferDataSourceProperties")
+  @ConfigurationProperties(prefix = "spring.datasource.transfer")
+  public DataSourceProperties transferDataSourceProperties() {
+    return new DataSourceProperties();
   }
 
-  @Bean(name = "transferEntityManager")
-  public EntityManager transferEntityManager(EntityManagerFactoryBuilder builder) {
-    return transferEntityManagerFactory(builder).getObject().createEntityManager();
+  @Bean(name = "transferDataSource")
+  public DataSource transferDataSource() throws SQLException {
+    MysqlXADataSource mysqlXADataSource = new MysqlXADataSource();
+    mysqlXADataSource.setUrl(transferDataSourceProperties().getUrl());
+    mysqlXADataSource.setPinGlobalTxToPhysicalConnection(true);
+    mysqlXADataSource.setPassword(transferDataSourceProperties().getPassword());
+    mysqlXADataSource.setUser(transferDataSourceProperties().getUsername());
+    AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
+    xaDataSource.setXaDataSource(mysqlXADataSource);
+    xaDataSource.setUniqueResourceName("transferDataSource");
+    xaDataSource.setBorrowConnectionTimeout(60);
+    xaDataSource.setMaxPoolSize(10);
+    return xaDataSource;
   }
+
+//  @Bean(name = "transferEntityManager")
+//  public EntityManager transferEntityManager() throws SQLException {
+//    return transferEntityManagerFactory().getObject().createEntityManager();
+//  }
 
   @Bean(name = "transferEntityManagerFactory")
-  public LocalContainerEntityManagerFactoryBean transferEntityManagerFactory(EntityManagerFactoryBuilder builder) {
-    return builder
-        .dataSource(transferDataSource)
-        .properties(getVendorProperties())
-        .packages("me.leckie.jka.atomikos.domain.dataobject.transfer") //设置实体类所在位置
-        .persistenceUnit("transferPersistenceUnit")
-        .build();
+  public LocalContainerEntityManagerFactoryBean transferEntityManagerFactory()
+      throws SQLException {
+    HashMap<String, Object> properties = new HashMap<>();
+    properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
+    properties.put("javax.persistence.transactionType", "JTA");
+    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+    entityManagerFactoryBean.setJtaDataSource(transferDataSource());
+    entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+    entityManagerFactoryBean.setPackagesToScan("me.leckie.jka.atomikos.domain.dataobject.transfer");//设置实体类所在位置
+    entityManagerFactoryBean.setPersistenceUnitName("transferPersistenceUnit");
+    entityManagerFactoryBean.setJpaPropertyMap(properties);
+    return entityManagerFactoryBean;
   }
 
-  @Bean(name = "transferTransactionManager")
-  public PlatformTransactionManager transferTransactionManager(EntityManagerFactoryBuilder builder) {
-    return new JpaTransactionManager(transferEntityManagerFactory(builder).getObject());
-  }
 }

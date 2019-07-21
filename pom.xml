@@ -60,6 +60,7 @@
     <module>jka-bytetccprovider</module>
     <module>jka-bytetccconsumer</module>
     <module>jka-atomikos</module>
+    <module>jka-multidatasource</module>
   </modules>
 
 </project>

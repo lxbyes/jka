@@ -57,6 +57,9 @@
     <module>jka-ribbon</module>
     <module>jka-feign</module>
     <module>jka-zuul</module>
+    <module>jka-bytetccprovider</module>
+    <module>jka-bytetccconsumer</module>
+    <module>jka-atomikos</module>
   </modules>
 
 </project>

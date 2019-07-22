@@ -5,7 +5,6 @@ import com.atomikos.icatch.jta.UserTransactionManager;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -18,7 +17,8 @@ import org.springframework.transaction.jta.JtaTransactionManager;
  * @author Leckie
  * @version TransactionConfiguration.java, v0.1 2019/7/22 3:30
  */
-@Configuration
+// @Configuration
+@Deprecated
 public class TransactionConfiguration {
 
   @Bean
@@ -48,7 +48,7 @@ public class TransactionConfiguration {
   }
 
   @Bean(name = "atomikosTransactionManager")
-  public TransactionManager atomikosTransactionManager() throws Throwable {
+  public TransactionManager atomikosTransactionManager() {
     UserTransactionManager userTransactionManager = new UserTransactionManager();
     userTransactionManager.setForceShutdown(false);
     AtomikosJtaPlatform.transactionManager = userTransactionManager;
@@ -63,6 +63,5 @@ public class TransactionConfiguration {
     TransactionManager atomikosTransactionManager = atomikosTransactionManager();
     return new JtaTransactionManager(userTransaction, atomikosTransactionManager);
   }
-
 
 }

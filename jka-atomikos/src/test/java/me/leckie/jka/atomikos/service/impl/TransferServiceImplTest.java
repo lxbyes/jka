@@ -1,6 +1,5 @@
 package me.leckie.jka.atomikos.service.impl;
 
-import javax.transaction.TransactionManager;
 import me.leckie.jka.atomikos.domain.dataobject.account.Account;
 import me.leckie.jka.atomikos.domain.dataobject.transfer.Transfer;
 import me.leckie.jka.atomikos.service.TransferService;
@@ -8,10 +7,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Leckie

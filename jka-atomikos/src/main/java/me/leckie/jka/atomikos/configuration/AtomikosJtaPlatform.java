@@ -8,6 +8,7 @@ import org.hibernate.engine.transaction.jta.platform.internal.AbstractJtaPlatfor
  * @author Leckie
  * @version AtomikosJtaPlatform.java, v0.1 2019/7/22 3:31
  */
+@Deprecated
 public class AtomikosJtaPlatform extends AbstractJtaPlatform {
 
   static TransactionManager transactionManager;
